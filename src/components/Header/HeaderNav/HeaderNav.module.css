@@ -1,0 +1,8 @@
+.navList {
+  display: flex;
+  column-gap: 20px;
+}
+
+.navList a {
+  color: #fff;
+}
