@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { fetchPostById } from '../api/postApi';
+import { BackButton } from '../components/BackButton/BackButton';
 import { Container } from '../components/Container/Container';
+
+// const settings = { name: 'fadeIn', duration: 200 };
 
 const Post = () => {
   const params = useParams();
@@ -9,6 +12,18 @@ const Post = () => {
   const [post, setPost] = useState(null);
   const [status, setStatus] = useState('idle');
   const [isLoading, setIsLoading] = useState(false);
+  const [counter, setCounter] = useState(0);
+  // const settings = useRef({ name: 'fadeIn', duration: 200 });
+
+  const navigate = useNavigate();
+  // const counter = useRef(0);
+  // const settings = useMemo(() => {
+  //   return { name: 'fadeIn', duration: 200 };
+  // }, []);
+
+  const handleBackButtonClick = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,13 +47,26 @@ const Post = () => {
   }
 
   if (status === 'error') {
-    return <>There was an error</>;
+    return <Navigate to="/error" />;
   }
 
   return (
     <>
       <Container>
-        <h1>{post.title}</h1>
+        <BackButton>Back</BackButton>
+        <h1>
+          {post.title}: {counter.current}
+        </h1>
+        <button onClick={() => setCounter((prev) => prev + 1)}>Click me</button>
+        {/* <button
+          onClick={() => {
+            console.log(counter.current);
+            counter.current = counter.current + 1;
+          }}
+        >
+          Click me
+        </button> */}
+        {/* <Foo settings={settings.current} /> */}
 
         <img
           className="blog-image"
@@ -52,3 +80,11 @@ const Post = () => {
 };
 
 export default Post;
+
+// const Foo = ({ settings }) => {
+//   useEffect(() => {
+//     console.log(settings);
+//   }, [settings]);
+
+//   return <>This is Foo</>;
+// };
